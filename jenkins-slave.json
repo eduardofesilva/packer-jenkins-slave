@@ -3,7 +3,7 @@
     "aws_access_key": "",
     "aws_secret_key": "",
     "aws_profile": "default",
-    "owner": "X1-SRE-Team"
+    "owner": "Eduardo Maldonado Fonseca Silva"
   },
   "provisioners": [{
       "type": "shell",
@@ -22,7 +22,7 @@
     "profile": "{{user `aws_profile`}}",
     "region": "us-east-1",
     "source_ami": "ami-07b4156579ea1d7ba",
-    "instance_type": "t2.micro",
+    "instance_type": "t2.medium",
     "ssh_username": "ubuntu",
     "ami_name": "jenkins-slave-{{timestamp}}",
     "ami_description": "Jenkins slave AMI",

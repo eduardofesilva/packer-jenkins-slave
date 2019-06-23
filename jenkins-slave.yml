@@ -14,6 +14,23 @@
         name: vm.max_map_count
         value: "{{ max_map_count }}"
         state: present
+    - name: Installing {{ item }}
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+        - unzip
+    - name: Installing Terraform v{{ terraform_version }}
+      unarchive:
+        src: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
+        dest: /usr/local/bin
+        remote_src: yes
+    - name: Installing Packer v{{ terraform_version }}
+      unarchive:
+        src: "https://releases.hashicorp.com/packer/{{ packer_version }}/packer_{{ packer_version }}_linux_amd64.zip"
+        dest: /usr/local/bin
+        remote_src: yes
   roles:
     - lean_delivery.java
     - unxnn.ssh
@@ -27,3 +44,5 @@
     - docker_users:
         - ubuntu
     - max_map_count: 12800000
+    - terraform_version: "0.11.12"
+    - packer_version: "1.4.1"
