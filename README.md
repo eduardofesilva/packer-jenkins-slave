@@ -5,6 +5,8 @@ The following items will be installed using a Ansible playbook (jenkins-slave.ym
 1. Java 8 (Oracle)
 2. Docker latest version
 3. Kubectl v1.14.3
+4. Terraform
+5. Packer
 
 
 ### Requirements
