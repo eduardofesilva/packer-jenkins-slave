@@ -1,0 +1,47 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "aws_profile": "default",
+    "owner": "X1-SRE-Team"
+  },
+  "provisioners": [{
+      "type": "shell",
+      "inline": ["sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt-get update && sudo apt-get install -y python2.7"]
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./jenkins-slave.yml",
+      "ansible_env_vars": ["ANSIBLE_HOST_KEY_CHECKING=False", "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -o ControlMaster=auto -o ControlPersist=60s'"]
+    }
+  ],
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "profile": "{{user `aws_profile`}}",
+    "region": "us-east-1",
+    "source_ami": "ami-07b4156579ea1d7ba",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "jenkins-slave-{{timestamp}}",
+    "ami_description": "Jenkins slave AMI",
+    "tags": {
+      "Name": "jenkins-slave",
+      "Owner": "{{user `owner` }}"
+
+    },
+    "launch_block_device_mappings": [{
+      "device_name": "/dev/sda1",
+      "volume_size": 40,
+      "volume_type": "gp2",
+      "delete_on_termination": true
+    }],
+    "ami_block_device_mappings": [{
+      "device_name": "/dev/sda1",
+      "volume_size": 40,
+      "volume_type": "gp2",
+      "delete_on_termination": true
+    }]
+  }]
+}

@@ -1,0 +1,29 @@
+- hosts: all
+  gather_facts: False
+  become: yes
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (sudo apt -y update && sudo apt install -y python-minimal)
+      register: output
+      changed_when: output.stdout != ""
+    - name: Gathering Facts
+      setup:
+  tasks:
+    - name: Updatnig vm.max_map_count
+      sysctl:
+        name: vm.max_map_count
+        value: "{{ max_map_count }}"
+        state: present
+  roles:
+    - lean_delivery.java
+    - unxnn.ssh
+    - geerlingguy.docker
+    - andrewrothstein.kubectl
+  vars:
+    - transport: repositories
+    - java_major_version: 8
+    - docker_edition: 'ce'
+    - docker_package_state: latest
+    - docker_users:
+        - ubuntu
+    - max_map_count: 12800000
