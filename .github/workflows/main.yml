@@ -1,0 +1,21 @@
+on: [push]
+
+jobs:
+  creating_ami:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@master
+    - name: Hello world action step
+      id: packer
+      uses: eduardofesilva/packer-ansible@master
+      with:
+        packerfile: 'jenkins-slave.json'
+      env:
+        PLAYBOOK: 'jenkins-slave.yml'
+        AWS_ACCESS_KEY_ID: {{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: {{ AWS_SECRET_ACCESS_KEY }}
+    # Use the output from the `hello` step
+    - name: Get the output time
+      run: echo "The time was ${{ steps.packer.outputs.ami }}"

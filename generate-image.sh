@@ -1,4 +1,5 @@
 #!/bin/bash
+export PLAYBOOK="jenkins-slave.yml"
 declare -a StringArray=("ansible" "ansible-galaxy" "packer" )
 for binary in ${StringArray[@]}; do
    echo ---------Checking $binary installation----------
