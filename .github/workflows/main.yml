@@ -1,17 +1,23 @@
+name: Greet Everyone
+# This workflow is triggered on pushes to the repository.
 on: [push]
 
 jobs:
-  creating_ami:
+  build:
+    # Job name is Greeting
+    name: Greeting
+    # This job runs on Linux
     runs-on: ubuntu-latest
-    name: A job to say hello
     steps:
-      - name: 'Checkout'
+      # This step uses GitHub's hello-world-javascript-action: https://github.com/actions/hello-world-javascript-action
+      - name: Checkout
         uses: eduardofesilva/packer-jenkins-slave@master
-      - name: Hello world action step
-        id: packer
-        run: docker docker run -ti -v "$PWD":/go/code --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --env INPUT_PACKERFILE=/go/code/$PACKERFILE --env INPUT_PLAYBOOKFILE=/go/code/$PLAYBOOK packeransible
-  env:
-    AWS_ACCESS_KEY_ID: {{ secrets.AWS_ACCESS_KEY_ID }}
-    AWS_SECRET_ACCESS_KEY: {{ AWS_SECRET_ACCESS_KEY }}
-    PACKERFILE: jenkins-slave.json
-    PLAYBOOK: jenkins-slave.yml
+        id: checkout
+      - name: Checkout
+        run: docker docker run -ti -v "$PWD":/go/code --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --env INPUT_PACKERFILE=/go/code/$PACKERFILE --env INPUT_PLAYBOOKFILE=/go/code/$PLAYBOOK eduardofesilva/packer-ansible
+    env:
+      AWS_ACCESS_KEY_ID: {{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: {{ secrets.AWS_SECRET_ACCESS_KEY }}
+      PACKERFILE: jenkins-slave.json
+      PLAYBOOK: jenkins-slave.yml
+
