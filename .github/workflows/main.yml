@@ -3,7 +3,7 @@ name: Packer builder
 on: [push]
 
 jobs:
-  build:
+  build_image:
     # Job name is Greeting
     name: Build new image
     # This job runs on Linux
@@ -13,11 +13,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         id: checkout
-      - name: Checkout
+      - name: Creating image
         run: docker container run -v "$PWD":/go/code --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --env INPUT_PACKERFILE=/go/code/$PACKERFILE --env INPUT_PLAYBOOKFILE=/go/code/$PLAYBOOK eduardofesilva/packer-ansible:light
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           PACKERFILE: jenkins-slave.json
           PLAYBOOK: jenkins-slave.yml
+    timeout-minutes: 10
 
