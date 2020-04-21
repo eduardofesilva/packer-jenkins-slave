@@ -2,13 +2,14 @@
   "variables": {
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "playbook": "{{env `PLAYBOOK`}}",
     "owner": "Eduardo Maldonado Fonseca Silva"
   },
   "sensitive-variables": ["aws_access_key", "aws_secret_key"],
   "provisioners": [
     {
       "type": "ansible",
-      "playbook_file": "./{{env `PLAYBOOK`}}",
+      "playbook_file": "{{user `playbook`}}",
       "ansible_env_vars": ["ANSIBLE_HOST_KEY_CHECKING=False", "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -o ControlMaster=auto -o ControlPersist=60s'"]
     }
   ],

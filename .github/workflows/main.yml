@@ -9,12 +9,9 @@ jobs:
       uses: eduardofesilva/packer-jenkins-slave@master
     - name: Hello world action step
       id: packer
-      uses: eduardofesilva/packer-ansible
-      with:
-        packerfile: 'jenkins-slave.json'
+      run: docker docker run -ti -v "$PWD":/go/code --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --env INPUT_PACKERFILE=/go/code/$PACKERFILE --env INPUT_PLAYBOOKFILE=/go/code/$PLAYBOOK packeransible
       env:
-        PLAYBOOK: jenkins-slave.yml
         AWS_ACCESS_KEY_ID: {{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: {{ AWS_SECRET_ACCESS_KEY }}
-    - name: Get the output time
-      run: echo "The time was ${{ steps.packer.outputs.ami }}"
+        PACKERFILE: jenkins-slave.json
+        PLAYBOOK: jenkins-slave.yml
