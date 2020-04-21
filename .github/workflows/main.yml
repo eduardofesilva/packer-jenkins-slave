@@ -11,7 +11,7 @@ jobs:
     steps:
       # This step uses GitHub's hello-world-javascript-action: https://github.com/actions/hello-world-javascript-action
       - name: Checkout
-        uses: eduardofesilva/packer-jenkins-slave@master
+        uses: actions/checkout@v2
         id: checkout
       - name: Checkout
         run: docker docker run -ti -v "$PWD":/go/code --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --env INPUT_PACKERFILE=/go/code/$PACKERFILE --env INPUT_PLAYBOOKFILE=/go/code/$PLAYBOOK eduardofesilva/packer-ansible
