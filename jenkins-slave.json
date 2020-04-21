@@ -1,17 +1,16 @@
 {
   "variables": {
-    "aws_access_key": "",
-    "aws_secret_key": "",
-    "aws_profile": "default",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "playbook": "{{env `PLAYBOOK`}}",
     "owner": "Eduardo Maldonado Fonseca Silva"
   },
-  "provisioners": [{
-      "type": "shell",
-      "inline": ["sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt-get update && sudo apt-get install -y python2.7"]
-    },
+  "sensitive-variables": ["aws_access_key", "aws_secret_key"],
+  "provisioners": [
     {
       "type": "ansible",
-      "playbook_file": "./jenkins-slave.yml",
+      "user": "ubuntu",
+      "playbook_file": "{{user `playbook`}}",
       "ansible_env_vars": ["ANSIBLE_HOST_KEY_CHECKING=False", "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -o ControlMaster=auto -o ControlPersist=60s'"]
     }
   ],
@@ -19,10 +18,9 @@
     "type": "amazon-ebs",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
-    "profile": "{{user `aws_profile`}}",
     "region": "us-east-1",
     "source_ami": "ami-07b4156579ea1d7ba",
-    "instance_type": "t2.medium",
+    "instance_type": "t2.micro",
     "ssh_username": "ubuntu",
     "ami_name": "jenkins-slave-{{timestamp}}",
     "ami_description": "Jenkins slave AMI",

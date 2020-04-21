@@ -33,7 +33,6 @@
         remote_src: yes
   roles:
     - lean_delivery.java
-    - unxnn.ssh
     - geerlingguy.docker
     - andrewrothstein.kubectl
   vars:
