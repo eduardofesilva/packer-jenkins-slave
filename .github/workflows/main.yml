@@ -15,9 +15,9 @@ jobs:
         id: checkout
       - name: Checkout
         run: docker docker run -ti -v "$PWD":/go/code --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --env INPUT_PACKERFILE=/go/code/$PACKERFILE --env INPUT_PLAYBOOKFILE=/go/code/$PLAYBOOK eduardofesilva/packer-ansible
-    env:
-      AWS_ACCESS_KEY_ID: {{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: {{ secrets.AWS_SECRET_ACCESS_KEY }}
-      PACKERFILE: jenkins-slave.json
-      PLAYBOOK: jenkins-slave.yml
+        env:
+          AWS_ACCESS_KEY_ID: {{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: {{ secrets.AWS_SECRET_ACCESS_KEY }}
+          PACKERFILE: jenkins-slave.json
+          PLAYBOOK: jenkins-slave.yml
 
